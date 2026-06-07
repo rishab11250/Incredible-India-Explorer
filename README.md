@@ -29,6 +29,17 @@ This project uses no complex build tools or backend frameworks. It runs purely i
    ```
 3. Open `index.html` in your favorite web browser!
 
+## Demo
+
+<img width="1909" height="910" alt="image" src="https://github.com/user-attachments/assets/84819247-7698-4cb5-ac16-c7f913733add" />
+<img width="1904" height="898" alt="image" src="https://github.com/user-attachments/assets/b0f9c023-063e-413a-99fc-6688f59e80d2" />
+<img width="1903" height="904" alt="image" src="https://github.com/user-attachments/assets/a564bc9a-29ea-49fb-9e2b-297976440727" />
+<img width="1888" height="877" alt="image" src="https://github.com/user-attachments/assets/c09a2ef0-5c2c-403a-83e2-9a52e5c1401a" />
+<img width="1886" height="777" alt="image" src="https://github.com/user-attachments/assets/fccdb4da-71bc-41d6-a80c-4eb152fcce4c" />
+<img width="1902" height="816" alt="image" src="https://github.com/user-attachments/assets/66d0a1b2-f3d0-40c2-abd1-23e812491849" />
+<img width="1899" height="901" alt="image" src="https://github.com/user-attachments/assets/bda3cf76-4b0f-4559-b1e4-a6dbdaed25ae" />
+
+
 ## 🤝 Contributing
 We welcome contributions! Please see our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and use the provided Issue and PR templates.
 
