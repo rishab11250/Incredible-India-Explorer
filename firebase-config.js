@@ -47,6 +47,17 @@ function sanitizeFirebaseConfig(config) {
   return sanitized;
 }
 
+function hasRequiredFirebaseConfig(config) {
+  return Boolean(
+    config?.apiKey &&
+    config.apiKey !== "YOUR_API_KEY" &&
+    config?.projectId &&
+    config.projectId !== "YOUR_PROJECT" &&
+    config?.appId &&
+    config.appId !== "YOUR_APP_ID"
+  );
+}
+
 function readRuntimeFirebaseConfig() {
   const globalScope = typeof globalThis !== "undefined" ? globalThis : {};
   const runtimeConfig =
@@ -103,15 +114,16 @@ async function loadFirebaseConfig() {
 }
 
 const firebaseConfig = await loadFirebaseConfig();
+const isFirebaseConfigured = hasRequiredFirebaseConfig(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
+const auth = isFirebaseConfigured ? getAuth(app) : null;
+const googleProvider = isFirebaseConfigured ? new GoogleAuthProvider() : null;
 
 isSupported().then((supported) => {
-  if (supported) {
+  if (supported && app) {
     getAnalytics(app);
   }
 });
 
-export { app, auth, googleProvider };
+export { app, auth, googleProvider, isFirebaseConfigured, firebaseConfig };
