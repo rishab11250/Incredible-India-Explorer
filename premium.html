@@ -137,50 +137,30 @@
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- 3D India Globe -->
-        <section id="globe-section-anchor" class="globe-section fade-in-section">
+               <!-- 3D India Globe -->
+        <section id="globe-section-anchor" class="globe-section fade-in-section" style="padding: 80px 0; border-bottom: 1px solid var(--border-color);">
             <div class="section-container">
-                <div class="globe-layout">
-                    <!-- Left column: 3D globe -->
-                    <div>
-                        <div class="globe-viewport-wrapper">
-                            <!-- HUD Overlays -->
-                            <div class="globe-hud hud-top-left">
-                                <span class="hud-pulse"></span>
-                                <span class="hud-text">LIVE SATELLITE FEED</span>
-                            </div>
-                            <div class="globe-hud hud-bottom-left">
-                                <span class="hud-coords">20.5937° N, 78.9629° E (India)</span>
-                            </div>
-                            <div class="globe-controls">
-                                <button class="btn-globe-ctrl" id="btn-globe-spin" title="Toggle Auto-Spin">🔄 Auto Spin</button>
-                                <button class="btn-globe-ctrl" id="btn-globe-zoom-in" title="Zoom In">➕</button>
-                                <button class="btn-globe-ctrl" id="btn-globe-zoom-out" title="Zoom Out">➖</button>
-                                <button class="btn-globe-ctrl" id="btn-globe-reset" title="Reset View">↩️</button>
-                            </div>
-                            
-                            <div id="globe-container"></div>
+                <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+                    <span class="section-badge" style="background: rgba(255,153,51,0.1); color: var(--primary-saffron); border: 1px solid rgba(255,153,51,0.3);">Satellite Tour</span>
+                    <h2 style="font-size: 2.5rem; line-height: 1.2;">3D India Globe</h2>
+                    <p style="margin-top: 10px; color: var(--text-muted);">Explore the geographical beauty of India from high orbit.</p>
+                </div>
+
+                <div style="max-width: 800px; margin: 0 auto; position: relative;">
+                    <div class="globe-viewport-wrapper">
+                        <!-- Controls overlay -->
+                        <div class="globe-controls">
+                            <button class="btn-globe-ctrl" id="btn-globe-spin" title="Toggle Auto-Spin">🔄 Auto Spin</button>
+                            <button class="btn-globe-ctrl" id="btn-globe-zoom-in" title="Zoom In">➕</button>
+                            <button class="btn-globe-ctrl" id="btn-globe-zoom-out" title="Zoom Out">➖</button>
+                            <button class="btn-globe-ctrl" id="btn-globe-reset" title="Reset View">↩️</button>
                         </div>
-                    </div>
-                    <!-- Right column: information cards -->
-                    <div class="globe-info-panel">
-                        <div class="section-header" style="text-align: left; margin-bottom: 20px;">
-                            <span class="section-badge" style="background: rgba(255,153,51,0.1); color: var(--primary-saffron); border: 1px solid rgba(255,153,51,0.3);">Satellite Tour</span>
-                            <h2 style="font-size: 2.5rem; line-height: 1.2;">3D India Globe</h2>
-                            <p style="margin-top: 10px; color: var(--text-muted);">Explore the geographical beauty of India from high orbit.</p>
-                        </div>
-                        <div class="globe-card">
-                            <h4>🌍 Interactive Orbit Controls</h4>
-                            <p>Drag, zoom, and spin the globe to view India from different atmospheric perspective heights.</p>
-                        </div>
-                        <div class="globe-card">
-                            <h4>📍 Cultural Hotspots</h4>
-                            <p>High-resolution geographical textures optimized for smooth desktop and mobile viewport rendering.</p>
-                        </div>
+                        
+                        <div id="globe-container"></div>
                     </div>
                 </div>
+            </div>
+        </section></div>
             </div>
         </section>
 
@@ -502,7 +482,7 @@
 
             globe = new THREE.Mesh(geometry, material);
             // Rotate to show India roughly
-            globe.rotation.y = -Math.PI / 2.5; 
+            globe.rotation.y = Math.PI / 2.5; 
             globe.rotation.x = Math.PI / 8;
             scene.add(globe);
 
@@ -515,6 +495,12 @@
 
             camera.position.z = 12;
 
+            // Tweening State for focus transitions
+            let targetRotX = Math.PI / 8;
+            let targetRotY = Math.PI / 2.5;
+            let targetZoom = 12;
+            let isTweening = false;
+
             // HUD and controls wiring
             let autoRotate = true;
             const btnSpin = document.getElementById('btn-globe-spin');
@@ -525,6 +511,7 @@
             if (btnSpin) {
                 btnSpin.addEventListener('click', () => {
                     autoRotate = !autoRotate;
+                    isTweening = false; // Stop active camera transition
                     btnSpin.style.background = autoRotate ? 'rgba(15, 23, 42, 0.6)' : 'var(--primary-saffron)';
                     btnSpin.style.color = autoRotate ? 'var(--text-light)' : 'white';
                     btnSpin.textContent = autoRotate ? '🔄 Auto Spin' : '⏹️ Paused';
@@ -533,22 +520,34 @@
 
             if (btnZoomIn) {
                 btnZoomIn.addEventListener('click', () => {
+                    isTweening = false;
                     camera.position.z = Math.max(7, camera.position.z - 1.5);
                 });
             }
 
             if (btnZoomOut) {
                 btnZoomOut.addEventListener('click', () => {
+                    isTweening = false;
                     camera.position.z = Math.min(22, camera.position.z + 1.5);
                 });
             }
 
             if (btnReset) {
                 btnReset.addEventListener('click', () => {
-                    globe.rotation.y = -Math.PI / 2.5;
-                    globe.rotation.x = Math.PI / 8;
-                    camera.position.z = 12;
+                    targetRotX = Math.PI / 8;
+                    targetRotY = Math.PI / 2.5;
+                    targetZoom = 12;
+                    isTweening = true;
                     autoRotate = true;
+
+                    // Reset active states on target buttons
+                    document.querySelectorAll('.btn-target').forEach(b => {
+                        if (b.getAttribute('data-target') === 'india') b.classList.add('active');
+                        else b.classList.remove('active');
+                    });
+                    document.getElementById('target-info-title').textContent = "Whole India";
+                    document.getElementById('target-info-desc').textContent = "Viewing the complete Indian subcontinent. You can spin, drag, and zoom the 3D globe using orbit controls or select a telemetry target above.";
+
                     if (btnSpin) {
                         btnSpin.style.background = 'rgba(15, 23, 42, 0.6)';
                         btnSpin.style.color = 'var(--text-light)';
@@ -557,10 +556,76 @@
                 });
             }
 
+            // Telemetry hot-spot selectors
+            const targetButtons = document.querySelectorAll('.btn-target');
+            const infoTitle = document.getElementById('target-info-title');
+            const infoDesc = document.getElementById('target-info-desc');
+
+            const globeTargets = {
+                india: {
+                    title: "Whole India",
+                    desc: "Viewing the complete Indian subcontinent. You can spin, drag, and zoom the 3D globe using orbit controls or select a telemetry target above.",
+                    rotX: Math.PI / 8,
+                    rotY: Math.PI / 2.5,
+                    zoom: 12
+                },
+                delhi: {
+                    title: "New Delhi",
+                    desc: "The historic capital territory of India. Home to landmark structures like India Gate, Rashtrapati Bhavan, and the ancient Red Fort, serving as the political center of the nation.",
+                    rotX: Math.PI / 6.2,
+                    rotY: Math.PI / 2.45,
+                    zoom: 8.5
+                },
+                himalayas: {
+                    title: "The Himalayas",
+                    desc: "The highest mountain range on Earth, framing northern India. Hosts snow-capped peaks like Nanda Devi, sacred shrines, and serves as the source of major perennial rivers.",
+                    rotX: Math.PI / 5.2,
+                    rotY: Math.PI / 2.5,
+                    zoom: 9
+                },
+                kerala: {
+                    title: "Kerala Backwaters",
+                    desc: "The lush, tropical southwestern coast of India. Renowned for its network of brackish lagoons, houseboats, spice plantations, and Ayurvedic healing traditions.",
+                    rotX: Math.PI / 22,
+                    rotY: Math.PI / 2.53,
+                    zoom: 8.5
+                }
+            };
+
+            targetButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    targetButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const targetKey = btn.getAttribute('data-target');
+                    const target = globeTargets[targetKey];
+
+                    if (target) {
+                        infoTitle.textContent = target.title;
+                        infoDesc.textContent = target.desc;
+
+                        targetRotX = target.rotX;
+                        targetRotY = target.rotY;
+                        targetZoom = target.zoom;
+                        isTweening = true;
+                        autoRotate = false;
+
+                        if (btnSpin) {
+                            btnSpin.style.background = 'rgba(15, 23, 42, 0.6)';
+                            btnSpin.style.color = 'var(--text-light)';
+                            btnSpin.textContent = '🔄 Auto Spin';
+                        }
+                    }
+                });
+            });
+
             let isDragging = false;
             let previousMousePosition = { x: 0, y: 0 };
 
-            container.addEventListener('mousedown', () => isDragging = true);
+            container.addEventListener('mousedown', () => {
+                isDragging = true;
+                isTweening = false; // Disable auto-aligning if user manually drags
+            });
             container.addEventListener('mousemove', (e) => {
                 if (isDragging) {
                     const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
@@ -575,6 +640,7 @@
             // Handle touch for mobile
             container.addEventListener('touchstart', (e) => {
                 isDragging = true;
+                isTweening = false;
                 previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
             });
             container.addEventListener('touchmove', (e) => {
@@ -590,9 +656,23 @@
             function animate() {
                 if (!activeRender) return;
                 animationFrameId = requestAnimationFrame(animate);
-                if (!isDragging && globe && autoRotate) {
-                    globe.rotation.y += 0.002; // slow auto-rotation
+                
+                if (isTweening) {
+                    // Smoothly interpolate (lerp) position
+                    globe.rotation.x += (targetRotX - globe.rotation.x) * 0.08;
+                    globe.rotation.y += (targetRotY - globe.rotation.y) * 0.08;
+                    camera.position.z += (targetZoom - camera.position.z) * 0.08;
+
+                    // Stop tweening once camera aligns
+                    if (Math.abs(globe.rotation.x - targetRotX) < 0.001 && 
+                        Math.abs(globe.rotation.y - targetRotY) < 0.001 &&
+                        Math.abs(camera.position.z - targetZoom) < 0.01) {
+                        isTweening = false;
+                    }
+                } else if (!isDragging && globe && autoRotate) {
+                    globe.rotation.y += 0.002;
                 }
+                
                 renderer.render(scene, camera);
             }
             animate();

@@ -576,6 +576,116 @@ body.light-theme .btn-globe-ctrl {
     font-weight: 600;
 }
 
+/* Telemetry and Target Selector Styles */
+.telemetry-panel {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border-color);
+    padding: 16px 20px;
+    border-radius: var(--border-radius-sm);
+    font-family: monospace;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-soft);
+}
+
+body.light-theme .telemetry-panel {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.tel-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tel-label {
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.tel-value {
+    color: var(--primary-gold);
+    font-weight: 700;
+}
+
+.target-selector-section {
+    margin-bottom: 25px;
+}
+
+.target-selector-title {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.target-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-target {
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: var(--transition-snappy);
+}
+
+body.light-theme .btn-target {
+    background: #FFFFFF;
+}
+
+.btn-target:hover {
+    border-color: var(--primary-gold);
+    color: var(--primary-gold);
+}
+
+.btn-target.active {
+    background: linear-gradient(135deg, var(--primary-saffron) 0%, var(--primary-gold) 100%);
+    color: black !important;
+    border-color: transparent;
+    box-shadow: var(--shadow-glow-active);
+}
+
+.target-info-card {
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    backdrop-filter: blur(10px);
+    transition: var(--transition-smooth);
+    min-height: 120px;
+    box-shadow: var(--shadow-soft);
+}
+
+body.light-theme .target-info-card {
+    background: #FFFFFF;
+}
+
+.target-info-card h4 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--primary-gold);
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+}
+
+.target-info-card p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
 /* ==========================================================================
    MOBILE RESPONSIVENESS MEDIA QUERIES
    ========================================================================== */
