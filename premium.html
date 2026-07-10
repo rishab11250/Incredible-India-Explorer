@@ -64,16 +64,40 @@
         <section class="premium-hero scroll-section">
             <div class="hero-overlay"></div>
             <div class="premium-hero-glow"></div>
+            
+            <!-- Floating gold dust particles -->
+            <div class="gold-dust-container">
+                <span class="dust-particle particle-1"></span>
+                <span class="dust-particle particle-2"></span>
+                <span class="dust-particle particle-3"></span>
+                <span class="dust-particle particle-4"></span>
+                <span class="dust-particle particle-5"></span>
+            </div>
+
             <div class="section-container" style="position: relative; z-index: 2;">
                 <div class="hero-content" style="text-align: left; margin: 0; width: 100%;">
-                    <span class="hero-tagline animate-fade-in" style="color: var(--primary-gold); font-weight: 700; letter-spacing: 1px;">🚀 NEXT-GEN EXPLORATION</span>
-                    <h1 class="hero-title animate-slide-up" style="font-size: 3.5rem; line-height: 1.2;">Premium <span class="highlight" style="color: var(--primary-gold);">Features</span></h1>
-                    <p class="hero-description animate-fade-in-delayed" style="max-width: 650px; margin-top: 15px; font-size: 1.15rem;">
+                    <span class="hero-tagline animate-fade-up-1">
+                        <span class="badge-star">★</span> EXCLUSIVE EXPERIENCE
+                    </span>
+                    <h1 class="hero-title animate-fade-up-2">
+                        Premium <span class="highlight">Features</span>
+                    </h1>
+                    <p class="hero-description animate-fade-up-3">
                         Step into the future of cultural discovery. Explore interactive 3D structures, stroll through historical eras, traverse the metaverse, and view award-winning cinematic documentaries.
                     </p>
-                    <div style="margin-top: 25px;">
-                        <a href="#globe-section-anchor" class="btn btn-primary animate-fade-in-delayed">Start Free Tour</a>
+                    <div style="margin-top: 30px;" class="animate-fade-up-4">
+                        <a href="#globe-section-anchor" class="btn-premium-cta">Start Free Tour <span class="btn-arrow">→</span></a>
                     </div>
+                </div>
+            </div>
+
+            <!-- Subtle Scroll Indicator -->
+            <div class="scroll-indicator animate-fade-up-4">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+                <div class="arrow-scroll">
+                    <span class="scroll-arrow-span"></span>
                 </div>
             </div>
         </section>
@@ -137,7 +161,9 @@
                     </div>
                 </div>
             </div>
-               <!-- 3D India Globe -->
+        </section>
+
+        <!-- 3D India Globe -->
         <section id="globe-section-anchor" class="globe-section fade-in-section" style="padding: 80px 0; border-bottom: 1px solid var(--border-color);">
             <div class="section-container">
                 <div class="section-header" style="text-align: center; margin-bottom: 40px;">
@@ -159,8 +185,6 @@
                         <div id="globe-container"></div>
                     </div>
                 </div>
-            </div>
-        </section></div>
             </div>
         </section>
 
@@ -295,8 +319,9 @@
     </footer>
 
     <script>
-        // Timeline Logic
-        const eraData = {
+        (() => {
+            // Timeline Logic
+            const eraData = {
             1: { 
                 title: "Ancient India (3300 BCE - 500 CE)", 
                 desc: "The golden age of science, mathematics, and philosophy. Home to the Indus Valley Civilization, the composition of the Vedas, and the legendary Mauryan and Gupta Empires.",
@@ -540,14 +565,6 @@
                     isTweening = true;
                     autoRotate = true;
 
-                    // Reset active states on target buttons
-                    document.querySelectorAll('.btn-target').forEach(b => {
-                        if (b.getAttribute('data-target') === 'india') b.classList.add('active');
-                        else b.classList.remove('active');
-                    });
-                    document.getElementById('target-info-title').textContent = "Whole India";
-                    document.getElementById('target-info-desc').textContent = "Viewing the complete Indian subcontinent. You can spin, drag, and zoom the 3D globe using orbit controls or select a telemetry target above.";
-
                     if (btnSpin) {
                         btnSpin.style.background = 'rgba(15, 23, 42, 0.6)';
                         btnSpin.style.color = 'var(--text-light)';
@@ -555,69 +572,6 @@
                     }
                 });
             }
-
-            // Telemetry hot-spot selectors
-            const targetButtons = document.querySelectorAll('.btn-target');
-            const infoTitle = document.getElementById('target-info-title');
-            const infoDesc = document.getElementById('target-info-desc');
-
-            const globeTargets = {
-                india: {
-                    title: "Whole India",
-                    desc: "Viewing the complete Indian subcontinent. You can spin, drag, and zoom the 3D globe using orbit controls or select a telemetry target above.",
-                    rotX: Math.PI / 8,
-                    rotY: Math.PI / 2.5,
-                    zoom: 12
-                },
-                delhi: {
-                    title: "New Delhi",
-                    desc: "The historic capital territory of India. Home to landmark structures like India Gate, Rashtrapati Bhavan, and the ancient Red Fort, serving as the political center of the nation.",
-                    rotX: Math.PI / 6.2,
-                    rotY: Math.PI / 2.45,
-                    zoom: 8.5
-                },
-                himalayas: {
-                    title: "The Himalayas",
-                    desc: "The highest mountain range on Earth, framing northern India. Hosts snow-capped peaks like Nanda Devi, sacred shrines, and serves as the source of major perennial rivers.",
-                    rotX: Math.PI / 5.2,
-                    rotY: Math.PI / 2.5,
-                    zoom: 9
-                },
-                kerala: {
-                    title: "Kerala Backwaters",
-                    desc: "The lush, tropical southwestern coast of India. Renowned for its network of brackish lagoons, houseboats, spice plantations, and Ayurvedic healing traditions.",
-                    rotX: Math.PI / 22,
-                    rotY: Math.PI / 2.53,
-                    zoom: 8.5
-                }
-            };
-
-            targetButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    targetButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    const targetKey = btn.getAttribute('data-target');
-                    const target = globeTargets[targetKey];
-
-                    if (target) {
-                        infoTitle.textContent = target.title;
-                        infoDesc.textContent = target.desc;
-
-                        targetRotX = target.rotX;
-                        targetRotY = target.rotY;
-                        targetZoom = target.zoom;
-                        isTweening = true;
-                        autoRotate = false;
-
-                        if (btnSpin) {
-                            btnSpin.style.background = 'rgba(15, 23, 42, 0.6)';
-                            btnSpin.style.color = 'var(--text-light)';
-                            btnSpin.textContent = '🔄 Auto Spin';
-                        }
-                    }
-                });
-            });
 
             let isDragging = false;
             let previousMousePosition = { x: 0, y: 0 };
@@ -702,6 +656,7 @@
                 }
             });
         }
+        })();
     </script>
     <script src="app.js"></script>
     <script type="module" src="firebase-config.js"></script>
