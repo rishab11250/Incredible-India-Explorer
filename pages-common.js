@@ -4,7 +4,7 @@
    Pure Vanilla JavaScript - no external dependencies.
    ========================================================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('app:route-changed', () => {
     initSiteChrome();
 
     const page = document.body.dataset.page;
@@ -542,3 +542,563 @@ function initTribesPage() {
     renderRegions();
     applyFilters();
 }
+
+/* ==========================================================================
+   2. EVOLUTION OF CURRENCY (COINS) PAGE
+   Appended for coin.html. Rendered independently of the app:route-changed
+   dispatcher above (this site's real navbar/footer come from app.js, which
+   does not fire that event) — coin.html calls initCoinsPage() itself on
+   DOMContentLoaded.
+   ========================================================================== */
+ 
+const COINS_DATA = [
+    {
+        id: 'ancient',
+        number: '01',
+        title: 'Ancient Coinage',
+        date: '~600 BCE – 300 BCE',
+        desc: 'The earliest form of Indian currency were punch-marked coins made of silver. These coins were issued by various Mahajanapadas and were symbols of trade, trust and authority.',
+        dyk: 'Some punch-marked coins have up to 5 different symbols!',
+        side: 'left',
+        theme: 'default',
+        circleImage: 'assets/coin1.png',
+        thumbs: [
+            { img: 'assets/coin1.png', label: 'Punch-marked Coin' },
+            { img: 'assets/coin2.png', label: 'Kahapana' },
+            { img: 'assets/coin3.png', label: 'Silver Shatamana' },
+            { img: 'assets/coin4.png', label: 'Copper Coin' }
+        ]
+    },
+    {
+        id: 'mauryan-gupta',
+        number: '02',
+        title: 'Mauryan & Gupta Era',
+        date: '300 BCE – 550 CE',
+        desc: 'Coins became more standardized during the Mauryan Empire. The Gupta Era introduced gold dinars with exquisite craftsmanship and inscriptions.',
+        dyk: 'The gold dinar of Samudragupta is considered one of the finest ancient coins in the world.',
+        side: 'right',
+        theme: 'default',
+        circleImage: 'assets/coin2.png',
+        thumbs: [
+            { img: 'assets/coin4.png', label: 'Kahapana' },
+            { img: 'assets/coin3.png', label: 'Mauryan Punch Marked' },
+            { img: 'assets/coin2.png', label: 'Gold Dinar' },
+            { img: 'assets/coin1.png', label: 'Gupta Gold Coin' }
+        ]
+    },
+    {
+        id: 'medieval',
+        number: '03',
+        title: 'Medieval / Sultanate & Mughal Era',
+        date: '1200 CE – 1700 CE',
+        desc: 'The silver \u2018Rupiya\u2019 was introduced by Sher Shah Suri in the 16th century, laying the foundation of India\u2019s monetary system.',
+        dyk: 'The word \u2018Rupee\u2019 comes from the Sanskrit word \u2018Rupya\u2019 meaning silver.',
+        side: 'left',
+        theme: 'default',
+        circleImage: 'assets/coin3.png',
+        thumbs: [
+            { img: 'assets/coin1.png', label: 'Sher Shah Rupee' },
+            { img: 'assets/coin4.png', label: 'Akbar Silver Rupee' },
+            { img: 'assets/coin3.png', label: 'Jahangir Coin' },
+            { img: 'assets/coin2.png', label: 'Aurangzeb Coin' }
+        ]
+    },
+    {
+        id: 'colonial',
+        number: '04',
+        title: 'British Colonial Era',
+        date: '1757 – 1947',
+        desc: 'The East India Company introduced uniform coinage. In 1861, the first paper notes were issued, marking a major shift in India\u2019s financial history.',
+        dyk: 'The first paper notes were issued by the Bank of Hindustan, Bengal & Bombay.',
+        side: 'right',
+        theme: 'blue',
+        circleImage: 'assets/coin4.png',
+        thumbs: [
+            { img: 'assets/coin3.png', label: 'Company Rupee' },
+            { img: 'assets/coin2.png', label: 'Victoria Coin' },
+            { img: 'assets/coin4.png', label: '1877 Rupee' },
+            { img: 'assets/coin1.png', label: 'First Paper Note (1861)' }
+        ]
+    },
+    {
+        id: 'independent',
+        number: '05',
+        title: 'Independent India (1947–1990s)',
+        date: '1947 – 1990s',
+        desc: 'India adopted the Ashoka Pillar as the national emblem on currency. The decimalization in 1957 simplified the system to rupees and paise.',
+        dyk: 'The \u20b9 symbol was not there then, but the value of the rupee grew stronger.',
+        side: 'left',
+        theme: 'green',
+        circleImage: 'assets/coin5.png',
+        thumbs: [
+            { img: 'assets/coin4.png', label: 'Ashoka Pillar Note' },
+            { img: 'assets/coin1.png', label: '\u20b91 Note (1967)' },
+            { img: 'assets/coin3.png', label: '\u20b910 Note (1970s)' },
+            { img: 'assets/coin2.png', label: '\u20b9100 Note (1985)' }
+        ]
+    },
+    {
+        id: 'modern',
+        number: '06',
+        title: 'Modern India (1990s–2016)',
+        date: '1990s – 2016',
+        desc: 'New designs, security features and the Mahatma Gandhi Series gave currency a modern identity. Demonetization in 2016 brought a bold economic reform.',
+        dyk: 'The \u20b9500 and \u20b92000 notes introduced in 2016 were part of India\u2019s clean currency mission.',
+        side: 'right',
+        theme: 'purple',
+        circleImage: 'assets/coin6.png',
+        thumbs: [
+            { img: 'assets/coin6-3.png', label: '\u20b9100 Note (1996)' },
+            { img: 'assets/coin6-5.png', label: 'Mahatma Gandhi Series' },
+            { img: 'assets/coin6-1.png', label: '\u20b9500 Note (2016)' },
+            { img: 'assets/coin6-2.png', label: '\u20b92000 Note (2016)' }
+        ]
+    },
+    {
+        id: 'digital',
+        number: '07',
+        title: 'Digital Era (2016–Present)',
+        date: '2016 – Present',
+        desc: 'India is embracing the future with UPI, digital payments and the e-Rupee (CBDC). From coins to code - the rupee is now just a tap away.',
+        dyk: 'The e-Rupee is launched by RBI as a Digital Currency (CBDC).',
+        side: 'left',
+        theme: 'digital',
+        circleImage: 'assets/coin7.png',
+        thumbs: [
+            { img: 'assets/coin1.png', label: 'UPI Payments' },
+            { img: 'assets/coin2.png', label: 'Mobile Wallets' },
+            { img: 'assets/coin3.png', label: 'e-Rupee (CBDC)' },
+            { img: 'assets/coin4.png', label: 'Digital India' }
+        ]
+    }
+];
+ 
+function initCoinsPage() {
+    const timelineMain = document.getElementById('coins-timeline-main');
+    const progressList = document.getElementById('coins-progress-list');
+ 
+    if (!timelineMain || !progressList) return;
+ 
+    /* ---------- Render progress sidebar ---------- */
+    progressList.innerHTML = COINS_DATA.map((era, idx) => `
+        <li class="coins-progress-item${idx === 0 ? ' active' : ''}" data-target="era-${era.id}">
+            <span class="dot"></span>${era.title}
+        </li>
+    `).join('');
+ 
+    /* ---------- Render timeline rows ---------- */
+    const rowsHtml = COINS_DATA.map(era => {
+        const themeClass = era.theme && era.theme !== 'default' ? ` theme-${era.theme}` : '';
+        const thumbsHtml = era.thumbs.map(t => `
+            <div class="coins-thumb">
+                <div class="coins-thumb-swatch">
+                    <img src="${t.img}" alt="${t.label}"
+                        onerror="this.replaceWith(Object.assign(document.createElement('i'), {className: 'fa-solid fa-coins fallback-icon'}))">
+                </div>
+                <span>${t.label}</span>
+            </div>
+        `).join('');
+ 
+        return `
+            <div class="coins-era-row era-${era.side}" id="era-${era.id}" data-era="${era.id}">
+                <div class="coins-era-card${themeClass}">
+                    <span class="coins-era-number">${era.number}</span>
+                    <h3>${era.title}</h3>
+                    <span class="coins-era-date">${era.date}</span>
+                    <p class="coins-era-desc">${era.desc}</p>
+                    <div class="coins-dyk">
+                        <span class="coins-dyk-icon"><i class="fa-solid fa-lightbulb"></i></span>
+                        <div class="coins-dyk-text">
+                            <strong>Did you know?</strong>
+                            <p>${era.dyk}</p>
+                        </div>
+                    </div>
+                    <div class="coins-thumb-row">${thumbsHtml}</div>
+                </div>
+                <div class="coins-era-node">
+                    <span class="coins-era-node-dot"></span>
+                    <span class="coins-era-node-connector"></span>
+                    <div class="coins-era-node-circle">
+                        <img src="${era.circleImage}" alt="${era.title} coin"
+                            onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+ 
+    timelineMain.insertAdjacentHTML('beforeend', rowsHtml);
+ 
+    const eraRows = Array.from(timelineMain.querySelectorAll('.coins-era-row'));
+    const progressItems = Array.from(progressList.querySelectorAll('.coins-progress-item'));
+ 
+    /* ---------- Reveal-on-scroll + active progress step ---------- */
+    if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, { threshold: 0.15 });
+        eraRows.forEach(row => revealObserver.observe(row));
+ 
+        const activeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const eraId = entry.target.id;
+                progressItems.forEach(item => {
+                    item.classList.toggle('active', item.dataset.target === eraId);
+                });
+            });
+        }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+        eraRows.forEach(row => activeObserver.observe(row));
+    } else {
+        eraRows.forEach(row => row.classList.add('in-view'));
+    }
+ 
+    /* ---------- Click a progress step to jump to that era ---------- */
+    progressItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const target = document.getElementById(item.dataset.target);
+            target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    });
+}
+ 
+/* ==========================================================================
+   3. RIVERS OF INDIA PAGE
+   Appended for river.html. river.html includes app.js/data.js itself for the
+   real site navbar/footer, so this file only needs to boot the rivers page
+   content — it does not rely on the app:route-changed dispatcher above.
+   ========================================================================== */
+
+const RIVERS_DATA = [
+    {
+        id: 'ganga',
+        name: 'Ganga',
+        region: 'north',
+        image: 'assets/river1.png',
+        cardDesc: 'The sacred river that purifies souls and nourishes millions.',
+        origin: 'Gangotri Glacier',
+        originFull: 'Gangotri Glacier, Uttarakhand',
+        mouth: 'Bay of Bengal',
+        length: '2,525 km',
+        statesCount: 5,
+        overview: 'Revered as Mother Ganga, this holy river holds immense mythological, spiritual and cultural significance in India. It is not just a water source but a symbol of purity, life and salvation.',
+        highlights: [
+            { icon: 'fa-om', label: 'Divine Significance', text: 'Believed to have descended from heaven to earth, Ganga is worshipped as a goddess.' },
+            { icon: 'fa-leaf', label: 'Ecological Value', text: 'Supports diverse flora and fauna and sustains millions of livelihoods along its course.' },
+            { icon: 'fa-landmark', label: 'Cultural Heritage', text: 'Source of inspiration for art, literature, festivals and ancient traditions.' }
+        ],
+        statesCovered: ['Uttarakhand', 'Uttar Pradesh', 'Bihar', 'West Bengal', 'Jharkhand'],
+        majorCities: ['Rishikesh', 'Varanasi', 'Haridwar', 'Patna', 'Prayagraj', 'Kolkata'],
+        majorTributaries: ['Yamuna', 'Ghaghara', 'Kosi', 'Gandak'],
+        quote: 'Ganga is not merely a river, it is a way of life, a flow of devotion that connects generations.'
+    },
+    {
+        id: 'yamuna',
+        name: 'Yamuna',
+        region: 'north',
+        image: 'assets/river2.png',
+        cardDesc: 'The eternal companion of Ganga, flowing through heritage and history.',
+        origin: 'Yamunotri Glacier',
+        originFull: 'Yamunotri Glacier, Uttarakhand',
+        mouth: 'Confluence at Prayagraj',
+        length: '1,376 km',
+        statesCount: 4,
+        overview: 'Yamuna is Ganga\u2019s eternal companion, weaving through the heartland of Indian history from the hills of Uttarakhand to the plains of Uttar Pradesh, nourishing civilizations along its banks.',
+        highlights: [
+            { icon: 'fa-om', label: 'Divine Significance', text: 'Worshipped as Goddess Yamuna, daughter of the Sun God, and linked to the legends of Lord Krishna.' },
+            { icon: 'fa-leaf', label: 'Ecological Value', text: 'Sustains agriculture across the Delhi-Agra corridor despite mounting pollution pressures.' },
+            { icon: 'fa-landmark', label: 'Cultural Heritage', text: 'Home to the Taj Mahal, Krishna\u2019s Braj Bhoomi and centuries of layered heritage.' }
+        ],
+        statesCovered: ['Uttarakhand', 'Haryana', 'Delhi', 'Uttar Pradesh'],
+        majorCities: ['Delhi', 'Mathura', 'Agra', 'Prayagraj'],
+        majorTributaries: ['Chambal', 'Betwa', 'Ken', 'Sindh'],
+        quote: 'Yamuna carries the songs of Krishna and the whispers of empires long past.'
+    },
+    {
+        id: 'brahmaputra',
+        name: 'Brahmaputra',
+        region: 'north',
+        image: 'assets/river3.png',
+        cardDesc: 'The mighty river with unmatched power and grace.',
+        origin: 'Angsi Glacier (Tibet)',
+        originFull: 'Angsi Glacier, Tibet',
+        mouth: 'Bay of Bengal',
+        length: '2,900 km',
+        statesCount: 4,
+        overview: 'One of the mightiest rivers in Asia, the Brahmaputra carves through the Himalayas into Assam, shaping fertile plains, islands and a way of life built around its immense power.',
+        highlights: [
+            { icon: 'fa-om', label: 'Divine Significance', text: 'Uniquely regarded as a male river-god in Hindu tradition, unlike most other Indian rivers.' },
+            { icon: 'fa-leaf', label: 'Ecological Value', text: 'Feeds the biodiverse floodplains of Kaziranga and the world\u2019s largest river island, Majuli.' },
+            { icon: 'fa-landmark', label: 'Cultural Heritage', text: 'Central to Assamese identity, festivals and the region\u2019s riverine trade history.' }
+        ],
+        statesCovered: ['Arunachal Pradesh', 'Assam', 'Meghalaya', 'West Bengal'],
+        majorCities: ['Dibrugarh', 'Guwahati', 'Tezpur', 'Dhubri'],
+        majorTributaries: ['Dibang', 'Lohit', 'Subansiri', 'Teesta'],
+        quote: 'The Brahmaputra does not merely flow, it thunders with the strength of the mountains it descends.'
+    },
+    {
+        id: 'godavari',
+        name: 'Godavari',
+        region: 'south',
+        image: 'assets/river4.png',
+        cardDesc: 'Dakshina Ganga \u2013 the lifeline of the Deccan Plateau.',
+        origin: 'Trimbakeshwar',
+        originFull: 'Trimbakeshwar, Maharashtra',
+        mouth: 'Bay of Bengal',
+        length: '1,465 km',
+        statesCount: 6,
+        overview: 'Known as the Dakshina Ganga, the Godavari is the lifeline of the Deccan Plateau, sustaining vast agricultural belts across peninsular India.',
+        highlights: [
+            { icon: 'fa-om', label: 'Divine Significance', text: 'Revered as the southern Ganga, hosting the sacred Nashik Kumbh Mela on its banks.' },
+            { icon: 'fa-leaf', label: 'Ecological Value', text: 'Irrigates one of India\u2019s largest river basins, supporting rice and cotton farming.' },
+            { icon: 'fa-landmark', label: 'Cultural Heritage', text: 'Anchors centuries of temple towns, classical arts and pilgrimage traditions.' }
+        ],
+        statesCovered: ['Maharashtra', 'Telangana', 'Andhra Pradesh', 'Chhattisgarh', 'Odisha', 'Karnataka'],
+        majorCities: ['Nashik', 'Nanded', 'Rajahmundry', 'Bhadrachalam'],
+        majorTributaries: ['Penganga', 'Manjira', 'Indravati', 'Sabari'],
+        quote: 'Godavari carries the Ganga\u2019s grace southward, blessing every field it touches.'
+    },
+    {
+        id: 'krishna',
+        name: 'Krishna',
+        region: 'south',
+        image: 'assets/river5.png',
+        cardDesc: 'A giver of life, prosperity and abundant harvests.',
+        origin: 'Mahabaleshwar',
+        originFull: 'Mahabaleshwar, Maharashtra',
+        mouth: 'Bay of Bengal',
+        length: '1,400 km',
+        statesCount: 5,
+        overview: 'Rising in the Western Ghats, the Krishna river sustains a vast basin of farmland, powering irrigation and prosperity across the Deccan interior.',
+        highlights: [
+            { icon: 'fa-om', label: 'Divine Significance', text: 'Associated with legends of Lord Krishna and revered at temple towns along its course.' },
+            { icon: 'fa-leaf', label: 'Ecological Value', text: 'Powers major irrigation projects and hydroelectric dams supporting millions of farmers.' },
+            { icon: 'fa-landmark', label: 'Cultural Heritage', text: 'Nurtures a rich heritage of temple architecture, classical music and Deccan cuisine.' }
+        ],
+        statesCovered: ['Maharashtra', 'Karnataka', 'Telangana', 'Andhra Pradesh', 'Goa'],
+        majorCities: ['Sangli', 'Vijayawada', 'Raichur', 'Amravati'],
+        majorTributaries: ['Tungabhadra', 'Bhima', 'Koyna', 'Ghataprabha'],
+        quote: 'Krishna flows quietly, yet no harvest in the Deccan forgets its gift.'
+    },
+    {
+        id: 'mahanadi',
+        name: 'Mahanadi',
+        region: 'east',
+        image: 'assets/river6.png',
+        cardDesc: 'The heart of Odisha, sustaining farms and people.',
+        origin: 'Sihawa Hills',
+        originFull: 'Sihawa Hills, Chhattisgarh',
+        mouth: 'Bay of Bengal',
+        length: '851 km',
+        statesCount: 2,
+        overview: 'The Mahanadi is the beating heart of Odisha, weaving through Chhattisgarh\u2019s forests before nourishing the fertile delta that has sustained farming communities for generations.',
+        highlights: [
+            { icon: 'fa-om', label: 'Divine Significance', text: 'Celebrated in Odia folklore and worshipped during regional harvest festivals.' },
+            { icon: 'fa-leaf', label: 'Ecological Value', text: 'Sustains the vast Hirakud Dam reservoir, one of the largest earthen dams in the world.' },
+            { icon: 'fa-landmark', label: 'Cultural Heritage', text: 'Shapes Odisha\u2019s rice-farming traditions, festivals and riverside temple towns.' }
+        ],
+        statesCovered: ['Chhattisgarh', 'Odisha'],
+        majorCities: ['Raipur', 'Sambalpur', 'Cuttack', 'Bhubaneswar'],
+        majorTributaries: ['Seonath', 'Hasdeo', 'Ib', 'Tel'],
+        quote: 'Mahanadi is the quiet heartbeat of Odisha, patient and endlessly giving.'
+    }
+];
+
+function initRiversPage() {
+    const cardsGrid = document.getElementById('rivers-cards-grid');
+    const filterTabs = document.getElementById('rivers-filter-tabs');
+    const searchInput = document.getElementById('rivers-search-input');
+    const modalBackdrop = document.getElementById('rivers-modal-backdrop');
+    const detailPanel = document.getElementById('rivers-detail-panel');
+
+    if (!cardsGrid || !filterTabs || !detailPanel) return;
+
+    let activeRegion = 'all';
+
+    /* ---------- Small decorative wave-with-dots SVG for the popup map path ---------- */
+    function waveSvg() {
+        return `
+            <svg viewBox="0 0 200 16" preserveAspectRatio="none">
+                <path d="M0,8 C25,-4 45,20 70,8 C95,-4 115,20 140,8 C155,2 170,2 200,8"
+                      fill="none" stroke="var(--primary-gold)" stroke-width="1.5" opacity="0.65"/>
+                <circle cx="65" cy="9" r="3" fill="var(--primary-gold)"/>
+                <circle cx="135" cy="9" r="3" fill="var(--primary-gold)"/>
+            </svg>
+        `;
+    }
+
+    /* ---------- Render: Cards Grid ---------- */
+    function renderCards() {
+        const query = (searchInput?.value || '').trim().toLowerCase();
+
+        const list = RIVERS_DATA.filter(r => {
+            const matchesRegion = activeRegion === 'all' || r.region === activeRegion;
+            const matchesQuery = !query ||
+                r.name.toLowerCase().includes(query) ||
+                r.origin.toLowerCase().includes(query) ||
+                r.statesCovered.join(' ').toLowerCase().includes(query);
+            return matchesRegion && matchesQuery;
+        });
+
+        if (!list.length) {
+            cardsGrid.innerHTML = `<p class="rivers-no-results">No rivers match your search. Try a different name or region.</p>`;
+            return;
+        }
+
+        cardsGrid.innerHTML = list.map(r => `
+            <div class="rivers-card" data-id="${r.id}">
+                <div class="rivers-card-img-wrap">
+                    <img src="${r.image}" alt="${r.name} river">
+                    <div class="rivers-card-img-overlay"></div>
+                    <span class="rivers-card-badge region-${r.region}">${r.region}</span>
+                    <h3 class="rivers-card-title">${r.name}</h3>
+                </div>
+                <div class="rivers-card-body">
+                    <p class="rivers-card-desc">${r.cardDesc}</p>
+                    <div class="rivers-card-stats">
+                        <div class="rivers-card-stat">
+                            <span class="rivers-card-stat-label"><i class="fa-solid fa-location-dot"></i> Origin</span>
+                            <span class="rivers-card-stat-value">${r.origin}</span>
+                        </div>
+                        <div class="rivers-card-stat">
+                            <span class="rivers-card-stat-label"><i class="fa-solid fa-ruler-horizontal"></i> Length</span>
+                            <span class="rivers-card-stat-value">${r.length}</span>
+                        </div>
+                        <div class="rivers-card-stat">
+                            <span class="rivers-card-stat-label"><i class="fa-solid fa-map"></i> States</span>
+                            <span class="rivers-card-stat-value">${r.statesCount}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        cardsGrid.querySelectorAll('.rivers-card').forEach(card => {
+            card.addEventListener('click', () => openRiverDetail(card.dataset.id));
+        });
+    }
+
+    /* ---------- Render: Detail Popup ---------- */
+    function openRiverDetail(riverId) {
+        const r = RIVERS_DATA.find(rv => rv.id === riverId);
+        if (!r) return;
+
+        const highlightsHtml = r.highlights.map(h => `
+            <div class="rivers-highlight-item">
+                <div class="rivers-highlight-icon"><i class="fa-solid ${h.icon}"></i></div>
+                <span class="rivers-highlight-label">${h.label}</span>
+                <p class="rivers-highlight-text">${h.text}</p>
+            </div>
+        `).join('');
+
+        const citiesHtml = r.majorCities.map(c => `<li><i class="fa-solid fa-building-columns"></i>${c}</li>`).join('');
+        const tributariesHtml = r.majorTributaries.map(t => `<li>${t}</li>`).join('');
+        const tagsHtml = r.statesCovered.map(s => `<span class="rivers-stat-tag">${s}</span>`).join('');
+
+        detailPanel.style.backgroundImage = `url('${r.image}')`;
+
+        detailPanel.innerHTML = `
+            <div class="rivers-detail-panel-overlay">
+                <button class="rivers-detail-close" id="rivers-detail-close" aria-label="Close">✕</button>
+
+                <div class="rivers-detail-top">
+                    <h2>${r.name}</h2>
+                    <p class="rivers-detail-tagline">${r.cardDesc}</p>
+                </div>
+
+                <p class="rivers-detail-desc">${r.overview}</p>
+
+                <div class="rivers-detail-row">
+                    <div class="rivers-detail-highlights">${highlightsHtml}</div>
+
+                    <div class="rivers-detail-mappath">
+                        <div class="rivers-mappath-row">
+                            <div class="rivers-mappath-point">
+                                <div class="rivers-mappath-icon"><i class="fa-solid fa-mountain"></i></div>
+                                <span class="rivers-mappath-label">Origin</span>
+                                <span class="rivers-mappath-value">${r.originFull}</span>
+                            </div>
+                            <div class="rivers-mappath-line">${waveSvg()}</div>
+                            <div class="rivers-mappath-point">
+                                <div class="rivers-mappath-icon"><i class="fa-solid fa-water"></i></div>
+                                <span class="rivers-mappath-label">Mouth</span>
+                                <span class="rivers-mappath-value">${r.mouth}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rivers-detail-statsbox">
+                        <div>
+                            <span class="rivers-stat-block-label">Length</span>
+                            <span class="rivers-stat-length-value">${r.length}</span>
+                        </div>
+                        <div class="rivers-stat-divider"></div>
+                        <div>
+                            <span class="rivers-stat-block-label">States Covered</span>
+                            <div class="rivers-stat-tags">${tagsHtml}</div>
+                        </div>
+                        <div class="rivers-stat-divider"></div>
+                        <div>
+                            <span class="rivers-stat-block-label">Major Cities</span>
+                            <ul class="rivers-stat-list">${citiesHtml}</ul>
+                        </div>
+                        <div class="rivers-stat-divider"></div>
+                        <div>
+                            <span class="rivers-stat-block-label">Major Tributaries</span>
+                            <ul class="rivers-stat-list">${tributariesHtml}</ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rivers-detail-quote">
+                    <p><span class="quote-mark">\u201c</span>${r.quote}<span class="quote-mark">\u201d</span></p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('rivers-detail-close')?.addEventListener('click', closeRiverDetail);
+
+        modalBackdrop.classList.add('open');
+        detailPanel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeRiverDetail() {
+        modalBackdrop.classList.remove('open');
+        detailPanel.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    modalBackdrop?.addEventListener('click', closeRiverDetail);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeRiverDetail();
+    });
+
+    /* ---------- Filter tab clicks ---------- */
+    filterTabs.querySelectorAll('.rivers-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeRegion = btn.dataset.region;
+            filterTabs.querySelectorAll('.rivers-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            renderCards();
+        });
+    });
+
+    /* ---------- Search ---------- */
+    searchInput?.addEventListener('input', renderCards);
+
+    /* ---------- Init ---------- */
+    renderCards();
+}
+
+/* river.html loads its real navbar/footer via app.js (like the rest of the
+   site), so this page boots itself directly on DOMContentLoaded rather than
+   waiting on the app:route-changed event used by the dispatcher above. */
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.body.dataset.page === 'rivers') {
+        initRiversPage();
+    }
+});

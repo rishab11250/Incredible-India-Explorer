@@ -3,10 +3,11 @@
    Pure Vanilla JavaScript for dynamic content, modals, sliders, and games.
    ========================================================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('app:route-changed', () => {
     initNavigation();
     initThemeToggle();
     initRotatingText();
+    initRoadTripFlipCards();
 
     // Page detection routing
     const pathname = window.location.pathname;
@@ -143,12 +144,60 @@ function initNavigation() {
         navMenu.classList.toggle('open');
     });
 
-    // Close mobile menu on nav link click
+    // Close mobile menu on nav link click (excluding dropdown toggles)
     navLinks.forEach(link => {
+        if (link.classList.contains('dropdown-toggle')) return;
         link.addEventListener('click', () => {
             menuToggle.classList.remove('open');
             navMenu.classList.remove('open');
         });
+    });
+
+    // Dropdown toggles toggle interaction logic
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const parentDropdown = toggle.closest('.nav-dropdown');
+            if (!parentDropdown) return;
+
+            const isOpen = parentDropdown.classList.contains('open');
+
+            // Close other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                if (dropdown !== parentDropdown) {
+                    dropdown.classList.remove('open');
+                    const otherToggle = dropdown.querySelector('.dropdown-toggle');
+                    if (otherToggle) {
+                        otherToggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+
+            // Toggle current dropdown state
+            if (isOpen) {
+                parentDropdown.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+            } else {
+                parentDropdown.classList.add('open');
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    // Close open dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-dropdown')) {
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('open');
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                if (toggle) {
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
     });
 
     // Scroll to Top action
@@ -5358,6 +5407,7 @@ function initStartupPage() {
     let searchQuery = '';
 
     renderAll();
+    registerStartupSearchIndex();
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -5585,28 +5635,42 @@ function initStartupPage() {
     function toggleFavorite(startupId) {
         if (favorites.has(startupId)) {
             favorites.delete(startupId);
+            window.Journey?.removeFromJourney(`startup-${startupId}`);
         } else {
             favorites.add(startupId);
+            const item = startupData.find((s) => s.id === startupId);
+            window.Journey?.saveToJourney({
+                id: `startup-${startupId}`,
+                explorerPage: 'startup.html',
+                title: item ? item.name : `Startup #${startupId}`,
+                thumbnail: item ? (item.logo || '') : '',
+                category: item ? (item.category || 'startup') : 'startup'
+            });
         }
 
-        saveFavorites(Array.from(favorites));
         renderAll();
     }
 
+    // Favorites now live in the shared "My Journey" store (see journey.js).
+    // This reads that shared store and pulls out just the startup ids so
+    // the rest of this page's logic (Set of ids) doesn't have to change.
     function loadFavorites() {
-        try {
-            const stored = JSON.parse(localStorage.getItem('startup-favorites') || '[]');
-            if (Array.isArray(stored)) {
-                return stored;
-            }
-        } catch (error) {
-            // Ignore malformed storage and fall back to an empty set.
-        }
-        return [];
+        if (!window.Journey) return [];
+        return window.Journey.getJourney()
+            .filter((item) => item.explorerPage === 'startup.html')
+            .map((item) => item.id.replace(/^startup-/, ''));
     }
 
-    function saveFavorites(items) {
-        localStorage.setItem('startup-favorites', JSON.stringify(items));
+    // Registers this page's bookmarkable items with the site-wide,
+    // cross-explorer search index (see journey.js / Journey.search).
+    function registerStartupSearchIndex() {
+        if (!window.Journey) return;
+        window.Journey.registerSearchItems('startup.html', startupData.map((item) => ({
+            id: `startup-${item.id}`,
+            title: item.name,
+            description: item.description || item.focus || '',
+            link: 'startup.html'
+        })));
     }
 
     function setupCompactBadge(imgEl, mediaEl, fallbackEl, options = {}) {
@@ -6067,3 +6131,21 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+/* ==========================================================================
+    Road trip card flip function , travel.html
+   ========================================================================== */  
+function initRoadTripFlipCards() {
+    document.querySelectorAll('.roadtrip-flip-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const flipCard = btn.closest('.roadtrip-card-flip');
+            flipCard.classList.toggle('flipped');
+        });
+    });
+
+    document.querySelectorAll('.roadtrip-card-back').forEach(back => {
+        back.addEventListener('click', () => {
+            back.closest('.roadtrip-card-flip').classList.remove('flipped');
+        });
+    });
+}
