@@ -1503,8 +1503,8 @@ button {
 
 .btn-scroll-top {
     position: fixed;
-    bottom: 110px;      /* above chatbot */
-    right: 24px;
+    bottom: 30px;
+    right: 30px;
     width: 46px;
     height: 46px;
     border-radius: 50%;
@@ -1522,19 +1522,6 @@ button {
     transform: translateY(10px);
     transition: var(--transition-smooth);
     z-index: 90;
-}
-
-.btn-scroll-top.visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-}
-
-.btn-scroll-top:hover {
-    background: var(--primary-gold);
-    color: #000;
-    border-color: transparent;
-    box-shadow: var(--shadow-glow-active);
 }
 
 .btn-scroll-top.visible {
@@ -1895,6 +1882,36 @@ button {
         display: none;
         /* Swipe/scroll is native on mobile */
     }
+}
+
+@media (max-height: 750px) {
+  .hero-content {
+    padding-top: calc(var(--navbar-height) + 10px);
+  }
+
+  .hero-tagline {
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-size: 2.6rem;
+    margin-bottom: 14px;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .hero-scroll-indicator {
+    bottom: 14px;
+  }
+}
+
+@media (max-height: 600px) {
+  .hero-scroll-indicator {
+    display: none; /* not enough room for it at all */
+  }
 }
 
 /* ==========================================================================
@@ -4050,6 +4067,32 @@ button {
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
+}
+
+@media (max-width: 400px) {
+  .hero-content {
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  .hero-title {
+    font-size: 2.1rem;
+    word-break: break-word;
+  }
+
+  .hero-tagline {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    padding: 0 4px;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+  }
+
+  .nav-container {
+    padding: 0 16px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -7429,6 +7472,8 @@ button {
     left: 0;
     background-color: var(--bg-dark-modal);
     min-width: 220px;
+    max-height: 70vh;
+    overflow-y: auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
@@ -7436,6 +7481,23 @@ button {
     border-radius: 8px;
     z-index: 1000;
     padding: 0.5rem 0;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 176, 31, 0.3);
+    border-radius: 10px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-saffron);
 }
 
 .nav-dropdown:last-of-type .dropdown-menu {
@@ -7469,6 +7531,10 @@ button {
 }
 
 @media (max-width: 1024px) {
+    .nav-menu {
+        overflow-y: auto;
+    }
+
     .dropdown-menu {
         position: static;
         display: none;
@@ -7476,6 +7542,8 @@ button {
         border: none;
         background: transparent;
         padding-left: 1rem;
+        max-height: none;
+        overflow-y: visible;
     }
 
     .nav-dropdown.active .dropdown-menu {
