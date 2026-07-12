@@ -28,12 +28,12 @@ document.addEventListener('app:route-changed', () => {
         initSportsPage();
     } else if (pathname.includes('science.html')) {
         initSciencePage();
-    } else if (pathname.includes('personalities.html')) { 
-        initScrollEffects();    
+    } else if (pathname.includes('personalities.html')) {
+        initScrollEffects();
         initPersonalitiesPage();
     } else if (pathname.includes('spiritual.html')) {
         initScrollEffects();
-        initSpiritualCarousel();  
+        initSpiritualCarousel();
     } else if (pathname.includes('startup.html')) {
         initStartupPage();
     } else if (pathname.includes('heritage.html')) {
@@ -60,7 +60,7 @@ document.addEventListener('app:route-changed', () => {
 
 /* ==========================================================================
    1. NAVIGATION & SCROLL EVENTS
-   ========================================================================== */   
+   ========================================================================== */
 
 function initNavigation() {
     const navbar = document.getElementById('navbar');
@@ -437,9 +437,9 @@ function initInteractiveMap() {
 
         // Set up highlights
         highlightsGrid.innerHTML = `
-            <div class="highlight-bullet"><span class="bullet-icon">ðŸ“</span><span>Capital: ${loc.capital}</span></div>
-            <div class="highlight-bullet"><span class="bullet-icon">ðŸ›</span><span>Famous Food: ${loc.food}</span></div>
-            <div class="highlight-bullet"><span class="bullet-icon">ðŸŽ‰</span><span>Major Festival: ${loc.festival}</span></div>
+            <div class="highlight-bullet"><span class="bullet-icon">&#127963;</span><span>Capital: ${loc.capital}</span></div>
+            <div class="highlight-bullet"><span class="bullet-icon">&#127835;</span><span>Famous Food: ${loc.food}</span></div>
+            <div class="highlight-bullet"><span class="bullet-icon">&#127881;</span><span>Major Festival: ${loc.festival}</span></div>
         `;
 
         // Render SVG in canvas
@@ -461,7 +461,7 @@ function initInteractiveMap() {
         if (infoContent) {
             infoContent.innerHTML = `
                 <div class="info-card-header">
-                    <div class="icon-circle">ðŸ“</div>
+                    <div class="icon-circle">IN</div>
                     <h3>${loc.name}</h3>
                 </div>
                 <p class="info-card-text">
@@ -482,17 +482,17 @@ function initInteractiveMap() {
 
         // Bind audio button
         overlayAudioBtn.classList.remove('playing');
-        overlayAudioBtn.innerHTML = '<span class="audio-icon">ðŸ”Š</span> Listen to Soundscape';
+        overlayAudioBtn.innerHTML = '<span class="audio-icon">&#128266;</span> Listen to Soundscape';
         stopSoundscape();
 
         overlayAudioBtn.onclick = () => {
             if (overlayAudioBtn.classList.contains('playing')) {
                 overlayAudioBtn.classList.remove('playing');
-                overlayAudioBtn.innerHTML = '<span class="audio-icon">ðŸ”Š</span> Listen to Soundscape';
+                overlayAudioBtn.innerHTML = '<span class="audio-icon">&#128266;</span> Listen to Soundscape';
                 stopSoundscape();
             } else {
                 overlayAudioBtn.classList.add('playing');
-                overlayAudioBtn.innerHTML = '<span class="audio-icon">ðŸ”‡</span> Stop Soundscape';
+                overlayAudioBtn.innerHTML = '<span class="audio-icon">&#128263;</span> Stop Soundscape';
                 playStateSoundscape(loc.name);
             }
         };
@@ -939,11 +939,11 @@ function initQuiz() {
 
         if (isCorrect) {
             feedback.classList.add('correct');
-            feedbackIcon.innerText = 'âœ…';
+            feedbackIcon.innerText = '✅';
             feedbackText.innerText = 'Correct! Great job!';
         } else {
             feedback.classList.add('wrong');
-            feedbackIcon.innerText = 'âŒ';
+            feedbackIcon.innerText = '❌';
             feedbackText.innerText = `Incorrect. The answer is ${correctAnswer}`;
         }
     }
@@ -956,14 +956,14 @@ function initQuiz() {
 
         // Select message matching rank
         if (score === 8) {
-            resultMsg.innerText = "Incredible Mastermind! ðŸ† You scored a perfect 8/8! You are an expert on India's vast culinary heritage!";
-            document.getElementById('quiz-result-icon').innerText = 'ðŸ†';
+            resultMsg.innerText = "Incredible Mastermind!  🥳 You scored a perfect 8/8! You are an expert on India's vast culinary heritage!";
+            document.getElementById('quiz-result-icon').innerText = '🎉';
         } else if (score >= 5) {
-            resultMsg.innerText = `Great score! ðŸŒŸ You got ${score}/8 correct. You have a solid grasp of Indian cuisine!`;
-            document.getElementById('quiz-result-icon').innerText = 'ðŸŒŸ';
+            resultMsg.innerText = `Great score! 👍 You got ${score}/8 correct. You have a solid grasp of Indian cuisine!`;
+            document.getElementById('quiz-result-icon').innerText = '🎉';
         } else {
-            resultMsg.innerText = `You scored ${score}/8. Keep exploring the interactive map and food lists to discover more flavors! ðŸ›`;
-            document.getElementById('quiz-result-icon').innerText = 'ðŸ›';
+            resultMsg.innerText = `You scored ${score}/8. Keep exploring the interactive map and food lists to discover more flavors! 🍛`;
+            document.getElementById('quiz-result-icon').innerText = '🍛';
         }
     }
 }
@@ -1052,41 +1052,43 @@ const cuisineDetails = {
 
 const festivalHighlights = {
     "Diwali": [
-        { icon: "ðŸª”", text: "Clay Diyas & Lighting" },
-        { icon: "ðŸŽ¨", text: "Flower & Powder Rangoli" },
-        { icon: "ðŸ¬", text: "Sharing Mithai (Sweets)" },
-        { icon: "ðŸŽ†", text: "Night Sparklers & Fireworks" }
+        { icon: "&#127982;", text: "Clay Diyas & Lighting" },
+        { icon: "&#127800;", text: "Flower & Powder Rangoli" },
+        { icon: "&#127852;", text: "Sharing Mithai (Sweets)" },
+        { icon: "&#127879;", text: "Night Sparklers & Fireworks" }
     ],
     "Holi": [
-        { icon: "ðŸŽ¨", text: "Organic Colors (Gulal)" },
-        { icon: "ðŸ’¦", text: "Pichkaris & Water Balloons" },
-        { icon: "ðŸ¥›", text: "Thandai & Gujiya Sweets" },
-        { icon: "ðŸ”¥", text: "Holika Dahan Bonfires" }
+        { icon: "&#127912;", text: "Organic Colors (Gulal)" },
+        { icon: "&#129767;", text: "Pichkaris & Water Balloons" },
+        { icon: "&#129371;", text: "Thandai & Gujiya Sweets" },
+        { icon: "&#128293;", text: "Holika Dahan Bonfires" }
     ],
     "Eid": [
-        { icon: "ðŸŒ™", text: "Crescent Moon Sighting" },
-        { icon: "ðŸ•Œ", text: "Congregational Prayers" },
-        { icon: "ðŸ¥£", text: "Sweet Sheer Khurma Feast" },
-        { icon: "ðŸŽ", text: "Eidi (Gift-Giving)" }
+        { icon: "&#127769;", text: "Crescent Moon Sighting" },
+        { icon: "&#x1F54C;", text: "Congregational Prayers" },
+        { icon: "&#127852;", text: "Sweet Sheer Khurma Feast" },
+        { icon: "&#127873;", text: "Eidi (Gift-Giving)" }
     ],
     "Pongal": [
-        { icon: "ðŸŒ¾", text: "Harvest Sugarcane Stalks" },
-        { icon: "ðŸº", text: "Decorated Clay Boiling Pots" },
-        { icon: "â˜€ï¸", text: "Surya (Sun God) Worship" },
-        { icon: "ðŸ„", text: "Decorating Cattle (Mattu)" }
+        { icon: "&#127806;", text: "Harvest Sugarcane Stalks" },
+        { icon: "&#127982;", text: "Decorated Clay Boiling Pots" },
+        { icon: "&#9728;&#65039;", text: "Surya (Sun God) Worship" },
+        { icon: "&#128004;", text: "Decorating Cattle (Mattu)" }
     ],
+
     "Navratri": [
-        { icon: "ðŸ’ƒ", text: "Garba & Dandiya Dances" },
-        { icon: "ðŸ¥»", text: "Chaniya Choli Dressups" },
-        { icon: "ðŸ•¯ï¸", text: "Ghatasthapana (Holy Jar)" },
-        { icon: "ðŸ”±", text: "Dussehra Effigy Burning" }
+        { icon: "&#128131;", text: "Garba & Dandiya Dances" },
+        { icon: "&#129535;", text: "Chaniya Choli Dressups" },
+        { icon: "&#127982;", text: "Ghatasthapana (Holy Jar)" },
+        { icon: "&#128293;", text: "Dussehra Effigy Burning" }
     ],
+
     "Bihu": [
-        { icon: "ðŸ¥", text: "Dhol & Pepa Music" },
-        { icon: "ðŸŒ¾", text: "Rongali Spring Dance" },
-        { icon: "ðŸ¥ž", text: "Pitha Rice Cake Feasts" },
-        { icon: "ðŸƒ", text: "Community Bonfires" }
-    ]
+        { icon: "&#129345;", text: "Dhol & Pepa Music" },
+        { icon: "&#127806;", text: "Rongali Spring Dance" },
+        { icon: "&#129366;", text: "Pitha Rice Cake Feasts" },
+        { icon: "&#128293;", text: "Community Bonfires" }
+    ],
 };
 
 function initCuisinePage() {
@@ -1289,7 +1291,7 @@ function initCuisinePage() {
                 btnPrevStep.disabled = currentStepIndex === 0;
 
                 if (currentStepIndex === currentRecipeSteps.length - 1) {
-                    btnNextStep.innerText = "Finish ðŸŽ‰";
+                    btnNextStep.innerText = "Finish 🎉";
                 } else {
                     btnNextStep.innerHTML = "Next Step &rarr;";
                 }
@@ -1355,10 +1357,10 @@ function initFestivalsPage() {
             // Load highlights
             highlightsGrid.innerHTML = '';
             const highlights = festivalHighlights[fest.name] || [
-                { icon: "ðŸŽ‰", text: "Traditional Customs" },
-                { icon: "ðŸ¥£", text: "Festive Meals" },
-                { icon: "âœ¨", text: "Joyous Decorations" },
-                { icon: "ðŸ«‚", text: "Community Gatherings" }
+                { icon: "&#127881;", text: "Traditional Customs" },     
+                { icon: "&#127852;", text: "Festive Meals" },           
+                { icon: "&#10024;", text: "Joyous Decorations" },       
+                { icon: "&#129309;", text: "Community Gatherings" }    
             ];
 
             highlights.forEach(hl => {
@@ -1445,17 +1447,17 @@ function initFestivalsPage() {
 
             // Bind soundscape controllers
             audioBtn.classList.remove('playing');
-            audioBtn.innerHTML = '<span class="audio-icon">ðŸ”Š</span> Listen to Soundscape';
+            audioBtn.innerHTML = '<span class="audio-icon">&#128266;</span> Listen to Soundscape';
             stopSoundscape();
 
             audioBtn.onclick = () => {
                 if (audioBtn.classList.contains('playing')) {
                     audioBtn.classList.remove('playing');
-                    audioBtn.innerHTML = '<span class="audio-icon">ðŸ”Š</span> Listen to Soundscape';
+                    audioBtn.innerHTML = '<span class="audio-icon">&#128266;</span> Listen to Soundscape';
                     stopSoundscape();
                 } else {
                     audioBtn.classList.add('playing');
-                    audioBtn.innerHTML = '<span class="audio-icon">ðŸ”‡</span> Stop Soundscape';
+                    audioBtn.innerHTML = '<span class="audio-icon">&#128263;</span> Stop Soundscape';
 
                     let drumEl = null;
                     if (fest.name === "Bihu") {
@@ -4878,21 +4880,21 @@ function initDancePage() {
         renderVideoPreviews();
     });
 
-        quizForm.addEventListener('submit', event => {
-            event.preventDefault();
-            quizSubmitted = true;
+    quizForm.addEventListener('submit', event => {
+        event.preventDefault();
+        quizSubmitted = true;
 
         const score = quizQuestions.reduce((total, question, index) => {
             return total + (quizAnswers[index] === question.answer ? 1 : 0);
         }, 0);
 
         const total = quizQuestions.length;
-            quizResult.innerHTML = `
+        quizResult.innerHTML = `
                 <strong>Your score: ${score} / ${total}</strong>
                 <p>${score === total ? 'Perfect score. You know your dance heritage beautifully.' : score >= 3 ? 'Strong recall. A quick review will make it even better.' : 'Good start. Revisit the cards above and try again.'}</p>
             `;
-            renderQuiz();
-        });
+        renderQuiz();
+    });
 
     quizReset.addEventListener('click', () => {
         quizAnswers = {};
@@ -5071,17 +5073,17 @@ function initDancePage() {
                     </legend>
                     <div class="dance-quiz-options" role="radiogroup" aria-label="${question.prompt}">
                         ${question.options.map(option => {
-                            const optionId = `dance-quiz-${index}-${option.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                            const isSelected = selectedAnswer === option;
-                            const isCorrect = quizSubmitted && option === question.answer;
-                            const isWrong = quizSubmitted && isSelected && option !== question.answer;
-                            return `
+                const optionId = `dance-quiz-${index}-${option.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+                const isSelected = selectedAnswer === option;
+                const isCorrect = quizSubmitted && option === question.answer;
+                const isWrong = quizSubmitted && isSelected && option !== question.answer;
+                return `
                                 <label class="dance-quiz-option ${isCorrect ? 'is-correct' : ''} ${isWrong ? 'is-incorrect' : ''}" for="${optionId}">
                                     <input type="radio" id="${optionId}" name="dance-question-${index}" value="${option}" ${isSelected ? 'checked' : ''}>
                                     <span>${option}</span>
                                 </label>
                             `;
-                        }).join('')}
+            }).join('')}
                     </div>
                     ${quizSubmitted ? `<p class="dance-question-feedback">${selectedAnswer === question.answer ? 'Correct answer picked.' : `Correct answer: ${question.answer}`}</p>` : ''}
                 </fieldset>
@@ -5921,7 +5923,7 @@ function initBharatGuide() {
     }
 }
 
-    
+
 /* ==========================================================================
    PERSONALITIES TYPE CHANGE FUNC
    ========================================================================== */
@@ -5957,7 +5959,7 @@ function initPersonalitiesPage() {
    ========================================================================== */
 
 const spiritualData = [
-    
+
     {
         id: "s2",
         name: "Taj Mahal",
@@ -6014,7 +6016,7 @@ const spiritualData = [
         image: "assets/Hemis_Monastery.png",
         description: "The largest and wealthiest monastery in Ladakh, home to a masked Cham dance festival held once every twelve years."
     }
-];   
+];
 
 function initSpiritualCarousel() {
     const carousel = document.getElementById('spiritual-carousel');
@@ -6062,46 +6064,46 @@ function initSpiritualCarousel() {
     }
 
     function render() {
-    const panel = document.querySelector('.spiritual-detail-panel');
-    panel.classList.add('updating');
+        const panel = document.querySelector('.spiritual-detail-panel');
+        panel.classList.add('updating');
 
-    const cards = carousel.querySelectorAll('.spiritual-card');
+        const cards = carousel.querySelectorAll('.spiritual-card');
 
-    cards.forEach((card, index) => {
-        const offset = getCircularOffset(index);
-        const absOffset = Math.abs(offset);
+        cards.forEach((card, index) => {
+            const offset = getCircularOffset(index);
+            const absOffset = Math.abs(offset);
 
-        card.classList.remove('is-active');
+            card.classList.remove('is-active');
 
-        if (absOffset > VISIBLE_RANGE) {
-            card.style.display = 'none';
-            return;
-        }
+            if (absOffset > VISIBLE_RANGE) {
+                card.style.display = 'none';
+                return;
+            }
 
-        card.style.display = 'block';
+            card.style.display = 'block';
 
-        const spacing = 200;
-        const scale = offset === 0 ? 1 : absOffset === 1 ? 0.8 : 0.62;
-        const opacity = offset === 0 ? 1 : absOffset === 1 ? 0.7 : 0.35;
-        const zIndex = 10 - absOffset;
-        const translateX = offset * spacing;
+            const spacing = 200;
+            const scale = offset === 0 ? 1 : absOffset === 1 ? 0.8 : 0.62;
+            const opacity = offset === 0 ? 1 : absOffset === 1 ? 0.7 : 0.35;
+            const zIndex = 10 - absOffset;
+            const translateX = offset * spacing;
 
-        card.style.zIndex = zIndex;
-        card.style.opacity = opacity;
-        card.style.transform =
-            `translate(-50%, -50%) translateX(${translateX}px) scale(${scale})`;
+            card.style.zIndex = zIndex;
+            card.style.opacity = opacity;
+            card.style.transform =
+                `translate(-50%, -50%) translateX(${translateX}px) scale(${scale})`;
 
-        if (offset === 0) card.classList.add('is-active');
-    });
+            if (offset === 0) card.classList.add('is-active');
+        });
 
-    const activeItem = spiritualData[activeIndex];
-    detailTitle.innerText = activeItem.name; // confirm you want this back
-    detailDesc.innerText = activeItem.description;
+        const activeItem = spiritualData[activeIndex];
+        detailTitle.innerText = activeItem.name; // confirm you want this back
+        detailDesc.innerText = activeItem.description;
 
-    requestAnimationFrame(() => {
-        panel.classList.remove('updating');
-    });
-}
+        requestAnimationFrame(() => {
+            panel.classList.remove('updating');
+        });
+    }
 
     function goNext() {
         activeIndex = (activeIndex + 1) % total; // wraps to 0 at the end
@@ -6121,19 +6123,19 @@ function initSpiritualCarousel() {
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(registration => {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, err => {
-        console.log('ServiceWorker registration failed: ', err);
-      });
-  });
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+    });
 }
 
 /* ==========================================================================
     Road trip card flip function , travel.html
-   ========================================================================== */  
+   ========================================================================== */
 function initRoadTripFlipCards() {
     document.querySelectorAll('.roadtrip-flip-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
