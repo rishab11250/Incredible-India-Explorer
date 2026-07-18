@@ -93,7 +93,7 @@ export default function TravelAnalyticsDashboard() {
     return MONTHLY_TRIPS;
   }, [range]);
 
-  const maxCoverage = STATE_COVERAGE[0].visits;
+  const maxCoverage = Math.max(...(STATE_COVERAGE || []).map(s => s.visits), 1);
 
   return (
     <div className="dash-root">
