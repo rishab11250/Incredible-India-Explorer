@@ -93,6 +93,159 @@
             color: #f1f1f1;
         }
     </style>
+    <style>
+        /* Loading overlay for SPA page transitions */
+        .app-loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 18, 30, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease;
+        }
+        .loading-spinner {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spinner-ring {
+            position: absolute;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            animation: spinner-rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        .spinner-ring-1 { width: 100%; height: 100%; border-top-color: #ff6f00; animation-delay: -0.45s; }
+        .spinner-ring-2 { width: 75%; height: 75%; border-top-color: #ffab00; animation-delay: -0.3s; }
+        .spinner-ring-3 { width: 50%; height: 50%; border-top-color: #ffd54f; animation-delay: -0.15s; }
+        .spinner-text {
+            position: absolute;
+            font-size: 10px;
+            font-weight: 600;
+            color: #ffd54f;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        @keyframes spinner-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* 404 / Error page styles */
+        .not-found-page {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+        .not-found-container {
+            max-width: 560px;
+        }
+        .not-found-code {
+            font-size: 6rem;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, #ff6f00, #ffab00, #ff6f00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        .not-found-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 0.75rem;
+            color: var(--text-primary, #e0e0e0);
+        }
+        .not-found-message {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary, #a0a0a0);
+            margin-bottom: 1.75rem;
+        }
+        .not-found-message strong {
+            word-break: break-all;
+        }
+        .not-found-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .not-found-actions .btn {
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .not-found-actions .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .not-found-home-btn {
+            background: linear-gradient(135deg, #ff6f00, #ffab00);
+            color: #fff;
+            text-decoration: none;
+        }
+        .not-found-search-btn {
+            background: transparent;
+            color: var(--text-primary, #e0e0e0);
+            border: 1px solid var(--border-color, #444) !important;
+        }
+        .not-found-suggestions h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.75rem;
+            color: var(--text-primary, #e0e0e0);
+        }
+        .not-found-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .not-found-link {
+            display: inline-block;
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            background: var(--card-bg, #1e1e2e);
+            border: 1px solid var(--border-color, #333);
+            color: var(--accent, #ffab00);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .not-found-link:hover {
+            background: var(--accent, #ffab00);
+            color: #fff;
+        }
+        /* Dark mode compatible - uses CSS variables */
+        [data-theme="light"] .not-found-page {
+            --text-primary: #222;
+            --text-secondary: #555;
+            --card-bg: #f5f5f5;
+            --border-color: #ddd;
+            --accent: #e65100;
+        }
+        .not-found-page {
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --card-bg: #1e1e2e;
+            --border-color: #333;
+            --accent: #ffab00;
+        }
+    </style>
     <title>Incredible India Explorer</title>
 
     <!-- Google Fonts -->
@@ -188,6 +341,16 @@
             </nav>
         </div>
     </header>
+
+    <!-- Loading Overlay (shown during SPA page transitions) -->
+    <div id="app-loading-overlay" class="app-loading-overlay" style="display:none;" role="status" aria-live="polite">
+        <div class="loading-spinner">
+            <div class="spinner-ring spinner-ring-1"></div>
+            <div class="spinner-ring spinner-ring-2"></div>
+            <div class="spinner-ring spinner-ring-3"></div>
+            <div class="spinner-text">Loading...</div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main id="app-root">
