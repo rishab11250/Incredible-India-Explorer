@@ -1,19 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
-
-let dataContent = fs.readFileSync(path.join(__dirname, '../data.js'), 'utf8');
-
-// Convert const/let declarations to properties on the sandbox
-dataContent = dataContent.replace(/const mapData =/g, 'this.mapData =');
-// Add other variables if needed
-// dataContent = dataContent.replace(/const cuisinesData =/g, 'this.cuisinesData =');
-
-const sandbox = {};
-vm.createContext(sandbox);
-vm.runInContext(dataContent, sandbox);
-
-const mapData = sandbox.mapData;
+const { mapData } = require('../data.js');
 
 const layoutPath = path.join(__dirname, 'layout.html');
 const layoutTemplate = fs.readFileSync(layoutPath, 'utf8');
