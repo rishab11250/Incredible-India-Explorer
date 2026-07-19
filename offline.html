@@ -448,9 +448,12 @@
                 retryBtn.disabled = true;
 
                 setTimeout(function () {
-                    window.location.href = document.referrer && document.referrer !== window.location.href
-                        ? document.referrer
-                        : 'index.html';
+                    var ref = document.referrer;
+                    var isSameOrigin = false;
+                    try {
+                        isSameOrigin = ref && new URL(ref, window.location.href).origin === window.location.origin;
+                    } catch (e) { /* malformed referrer */ }
+                    window.location.href = (isSameOrigin && ref !== window.location.href) ? ref : 'index.html';
                 }, 1800);
             }
 
