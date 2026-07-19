@@ -150,6 +150,12 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
     var sphereGeoCluster = new THREE.SphereGeometry(0.6, 20, 20);
 
     function rebuildMarkers() {
+        markersGroup.children.forEach(function (child) {
+            if (child.material) {
+                if (child.material.map) child.material.map.dispose();
+                child.material.dispose();
+            }
+        });
         markersGroup.clear();
         markerObjects = [];
 
@@ -201,7 +207,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
         ctx.fillStyle = "rgba(0,0,0,0)";
         ctx.fillRect(0, 0, 64, 64);
         ctx.font = "bold 34px Outfit, sans-serif";
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = "`#ffffff`";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(text, 32, 34);
