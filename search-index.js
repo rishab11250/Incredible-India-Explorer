@@ -893,23 +893,41 @@ window.indiaSearchIndex = [
     description: "Compare historical and present-day images of India's iconic heritage sites with an interactive before/after slider.",
     url: "then-vs-now.html"
   },
-  // --- Indian Scientific Institutions Explorer ---
+  // --- National Parks Timeline ---
   {
-    title: "Indian Scientific Institutions Explorer",
-    category: "Science & Technology",
-    description: "Discover India's premier scientific, academic, defense, and space research centers.",
-    url: "scientific-institutions.html"
+    title: "India's National Parks Timeline",
+    category: "Nature & Wildlife",
+    description: "Interactive visual timeline showing when India's national parks and wildlife sanctuaries were established.",
+    url: "national-parks-timeline.html"
   },
   {
-    title: "Indian Space Research Organisation (ISRO)",
-    category: "Scientific Institutions Explorer",
-    description: "Learn about ISRO centers, satellite missions, and space exploration hubs.",
-    url: "scientific-institutions.html?search=ISRO"
+    title: "Jim Corbett National Park Timeline",
+    category: "National Parks Timeline",
+    description: "Established in 1936 as Hailey National Park, India's oldest protected area.",
+    url: "national-parks-timeline.html?search=Corbett"
   },
   {
-    title: "Indian Institute of Science (IISc Bangalore)",
-    category: "Scientific Institutions Explorer",
-    description: "India's premier academic research institute for advanced science and engineering.",
-    url: "scientific-institutions.html?search=IISc"
+    title: "Kaziranga National Park Timeline",
+    category: "National Parks Timeline",
+    description: "Formally established as a national park in 1974, home to the one-horned rhinoceros.",
+    url: "national-parks-timeline.html?search=Kaziranga"
+  // --- Indian Climate Zones Explorer ---
+  {
+    title: "Indian Climate Zones Explorer",
+    category: "Nature & Geography",
+    description: "Interactive visual explorer explaining India's climatic zones, rainfall distribution, and seasonal patterns.",
+    url: "climate-zones.html"
+  },
+  {
+    title: "Tropical Wet / Monsoon Rainforest",
+    category: "Climate Zone",
+    description: "Explore the tropical wet zones of Kerala, Coastal Karnataka, and Andaman Islands with high rainfall and lush vegetation.",
+    url: "climate-zones.html?zone=monsoon"
+  },
+  {
+    title: "Arid / Desert Climate (Thar)",
+    category: "Climate Zone",
+    description: "Explore the dry, arid conditions of Western Rajasthan and Kutch with extreme temperatures and low rainfall.",
+    url: "climate-zones.html?zone=arid"
   }
 ];
