@@ -124,8 +124,16 @@ let leaderboard = [];
 
 function loadLeaderboard() {
   const saved = localStorage.getItem(LEADERBOARD_KEY);
-  if (saved) {
-    leaderboard = JSON.parse(saved);
+  let parsed = null;
+  try {
+    parsed = saved ? JSON.parse(saved) : null;
+  } catch (e) {
+    console.warn("Leaderboard data was corrupted, resetting to defaults.", e);
+    parsed = null;
+  }
+
+  if (Array.isArray(parsed)) {
+    leaderboard = parsed;
   } else {
     // Default sample names so the leaderboard isn't empty on first visit
     leaderboard = [
@@ -153,7 +161,11 @@ function renderLeaderboard(listEl) {
   const sorted = [...leaderboard].sort((a, b) => b.score - a.score).slice(0, 8);
   sorted.forEach((entry, i) => {
     const li = document.createElement("li");
-    li.innerHTML = `<span>${i + 1}. ${entry.name}</span><span>${entry.score} pts &nbsp; 🔥${entry.streak || 0}</span>`;
+    const rankSpan = document.createElement("span");
+    rankSpan.textContent = `${i + 1}. ${entry.name}`;
+    const scoreSpan = document.createElement("span");
+    scoreSpan.textContent = `${entry.score} pts \u00A0 🔥${entry.streak || 0}`;
+    li.append(rankSpan, scoreSpan);
     listEl.appendChild(li);
   });
 }
@@ -175,6 +187,8 @@ playAgainBtn.addEventListener("click", () => {
   difficultyBtns.forEach(b => b.classList.remove("selected"));
   selectedDifficulty = null;
   startBtn.disabled = true;
+  saveScoreBtn.disabled = false;
+  saveScoreBtn.textContent = "Save Score";
 });
 
 // ---------- Game Flow ----------
@@ -290,7 +304,9 @@ function endGame() {
   saveBestScoreIfHigher(score);
   loadBestScore();
 
-  const maxPossible = questions.length * 20;
+  const maxTimeBonus = Math.ceil(difficultyConfig[selectedDifficulty].time / 4);
+  const maxPerQuestion = 10 + maxTimeBonus;
+  const maxPossible = questions.length * maxPerQuestion;
   const percent = score / maxPossible;
 
   if (gameOverByTimeout) {
@@ -317,6 +333,7 @@ saveScoreBtn.addEventListener("click", () => {
     return;
   }
   leaderboard.push({ name, score, streak: streak });
+  leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 50);
   saveLeaderboard();
   renderLeaderboard(finalLeaderboardList);
   renderLeaderboard(leaderboardPreviewList);
