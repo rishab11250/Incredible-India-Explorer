@@ -7,9 +7,9 @@
 //   "editor"      -> create/edit form (guide-editor.html)
 //   "moderation"  -> admin/moderator dashboard (guide-moderation.html)
 
-import { authApi } from './auth-core.mjs';
-import * as Guides from './guides-core.mjs';
-import { injectCSRFToken, validateCSRFToken } from './csrf-protection.mjs';
+import { authApi } from '../js-modules/auth/auth-core.mjs';
+import * as Guides from '../js-modules/guides/guides-core.mjs';
+import { injectCSRFToken, validateCSRFToken } from '../js-modules/auth/csrf-protection.mjs';
 
 // ---------------------------------------------------------------------
 // small shared helpers
