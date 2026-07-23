@@ -16,13 +16,29 @@ Thank you for your interest in contributing to **Incredible India Explorer**! We
 * Commit Message Convention
 * Reporting Issues
 
----
+1. Fork the repository.
+2. Clone your fork:
+
+   ```bash
+   git clone https://github.com/your-username/incredible-india-explorer.git
+   ```
+
+3. Open `index.html` in your browser — no build tools required.
 
 # Code of Conduct
 
 Please be respectful and collaborative. By participating in this project, you agree to follow our Code of Conduct and help maintain a welcoming environment for everyone.
 
----
+1. Create a branch from `main`:
+
+   ```bash
+   git checkout -b fix/your-fix-name main
+   ```
+
+2. Make your changes following the [Coding Standards](#coding-standards).
+3. Test locally by opening the relevant HTML files in your browser.
+4. Check for console errors and responsive layout issues.
+5. Commit and push, then open a Pull Request.
 
 # Getting Started
 
@@ -143,20 +159,56 @@ frontend/script.js
 
 or
 
-```
-frontend/random.js
-frontend/page.css
+```text
+incredible-india-explorer/
+  index.html              -- Landing page with map, cuisine, festivals, quiz
+  app.js                  -- Core application logic (navigation, map, theme, quiz)
+  styles.css              -- Global stylesheet (~18k lines)
+  pages-common.js         -- Shared logic for newer pages (tribes, coins, rivers)
+  pages-common.css        -- Shared styles for newer pages
+  router.js               -- SPA routing engine with lifecycle management
+  data.js                 -- Map coordinates and state data
+  journey.js              -- Bookmark ("My Journey") system
+  search-index.js         -- Client-side search index
+  auth.js / auth-core.mjs -- Authentication (Firebase + localStorage fallback)
+  sw.js                   -- Service Worker with caching strategies
+  js-modules/             -- Page-specific lazy-loaded JS modules
+  assets/                 -- Images and icons
+  states/                 -- Individual state detail pages
+  docs/                   -- Additional documentation and test files
+  .github/                -- Issue templates, PR template, workflows
 ```
 
 Loose HTML, CSS, or JavaScript files inside the `frontend` directory are **not allowed**.
 
----
+### HTML
 
-## Feature Folder Naming
+- Use semantic HTML5 elements (`<header>`, `<main>`, `<section>`, `<nav>`, `<footer>`).
+- Include `aria-label`, `role`, and `alt` attributes for accessibility.
+- Use lowercase for tag and attribute names.
 
-Use **kebab-case**.
+### CSS
 
-✅ Good
+- Use CSS custom properties from `:root` in `styles.css` for consistency.
+- Follow the existing naming convention: `.kebab-case-classnames`.
+- Support both dark (default) and light theme via `.light-theme` on `<body>`.
+- Write responsive styles using the existing breakpoints (1024px, 768px, 640px).
+
+### JavaScript
+
+- Use vanilla JavaScript — no frameworks or libraries.
+- Prefer `function` declarations over arrow functions for page-level logic.
+- Use `const` and `let` (never `var` except when needed for wider scope).
+- Expose shared APIs on `window` (e.g., `window.Journey`, `window.ToastNotifier`).
+- Wrap modules in IIFE `(function() { ... })()` to avoid polluting global scope.
+- Lazy-load page-specific modules via `window.lazyLoadScript()`.
+- Handle errors gracefully with `try/catch` and user-facing toast notifications.
+
+### Accessibility
+
+- All interactive elements must be keyboard-accessible.
+- Use `aria-live` regions for dynamic content updates.
+- Maintain focus trapping for modals and overlays using `window.setupFocusTrap()`.
 
 ```
 river-origin-challenge
@@ -254,6 +306,12 @@ We follow Conventional Commits.
 
 Examples:
 
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```text
+<type>: <short description>
+
+<optional body>
 ```
 feat: add metro master game
 
@@ -301,5 +359,23 @@ Please verify the following:
 
 If you have questions about an issue or implementation, feel free to ask in the issue discussion before starting work.
 
-Happy Contributing! 🚀🇮🇳
+Types:
+
+- `feat:` — New feature or page
+- `fix:` — Bug fix
+- `docs:` — Documentation only
+- `style:` — CSS or formatting changes (no logic change)
+- `refactor:` — Code restructuring
+- `perf:` — Performance improvement
+- `a11y:` — Accessibility improvement
+- `chore:` — Tooling, config, or CI changes
+
+## Pull Request Process
+
+1. Ensure your branch is based on the latest `main`.
+2. Keep PRs focused — one change per PR.
+3. Update documentation if your change affects the public API or setup.
+4. Verify your changes work locally in both dark and light themes.
+5. Fill out the [PR template](.github/PULL_REQUEST_TEMPLATE.md) completely.
+6. A maintainer will review your PR. Address any feedback promptly.
 
