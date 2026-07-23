@@ -18,8 +18,8 @@ import {
   setPersistence,
   browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { authApi } from './auth-core.mjs';
-import { injectCSRFToken, validateCSRFToken } from './csrf-protection.mjs';
+import { authApi } from './js-modules/auth/auth-core.mjs';
+import { injectCSRFToken, validateCSRFToken } from './js-modules/auth/csrf-protection.mjs';
 
 // Expose core local auth functions to global window context for page scripts
 if (typeof window !== 'undefined') {

@@ -9,9 +9,9 @@
 //      that any page can call to record an activity, mirroring how
 //      `window.Journey` works for bookmarks.
 //   2. Render the two new pages this feature adds:
-//        data-page="achievements" -> achievements.html (XP, level, streak,
+//        data-page="achievements" -> frontend/gamification/achievements.html (XP, level, streak,
 //          badge grid, active challenges)
-//        data-page="leaderboard"  -> leaderboard.html (global/friends rank)
+//        data-page="leaderboard"  -> frontend/gamification/leaderboard.html (global/friends rank)
 //   3. Surface new badge/challenge/level-up unlocks as toasts via the
 //      existing window.ToastNotifier (js-modules/toast-system.js), loaded
 //      by pages-common.js on every page.
@@ -32,7 +32,7 @@ async function resolveUserId() {
   if (resolvedUserIdPromise) return resolvedUserIdPromise;
   resolvedUserIdPromise = (async () => {
     try {
-      const { getStoredAuthUser } = await import('./auth-session.mjs');
+      const { getStoredAuthUser } = await import('../../js-modules/auth/auth-session.mjs');
       const user = getStoredAuthUser();
       if (user && user.uid) {
         return { userId: user.uid, displayName: user.displayName || user.email || 'Explorer' };

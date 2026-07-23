@@ -8,7 +8,7 @@
                             window.location.pathname.includes('/freedom-timeline/') ||
                             window.location.pathname.includes('/postal-stamps/') ||
                             window.location.pathname.includes('/handloom/')) ? '../' : '';
-        script.src = pathPrefix + 'seo-helper.js';
+        script.src = pathPrefix + 'js-modules/seo-helper/seo-helper.js';
         script.defer = true;
         document.head.appendChild(script);
     }
