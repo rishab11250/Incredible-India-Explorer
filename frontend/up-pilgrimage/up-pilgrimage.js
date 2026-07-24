@@ -669,6 +669,7 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
         g.setAttribute("transform", `translate(${dest.coords.x}, ${dest.coords.y})`);
         g.setAttribute("tabindex", "0");
         g.setAttribute("role", "button");
+        g.setAttribute("aria-label", `${dest.name} (${dest.category})`);
 
         // Outer Glow Ring
         const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -706,6 +707,14 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
           activeSelectedDestId = dest.id;
           renderMap();
           renderDestinationCard(dest.id);
+        });
+        g.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            activeSelectedDestId = dest.id;
+            renderMap();
+            renderDestinationCard(dest.id);
+          }
         });
 
         mapNodesGroup.appendChild(g);
