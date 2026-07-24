@@ -984,6 +984,18 @@ window.indiaSearchIndex = [
     description: "Explore the dry, arid conditions of Western Rajasthan and Kutch with extreme temperatures and low rainfall.",
     url: "frontend/climate-zones/climate-zones.html?zone=arid"
   },
+  // --- Uttar Pradesh Tourism Dashboard ---
+  {
+    title: "Uttar Pradesh Tourism Dashboard",
+    category: "State Tourism Portal",
+    description: "Central entry point portal for exploring Uttar Pradesh covering Heritage, Religious Places, Food, Festivals, Travel Circuits, Wildlife, Handicrafts, History, Games, and District Explorer.",
+    url: "frontend/up-dashboard/up-dashboard.html"
+  },
+  {
+    title: "UP Tourism Highlights & Interactive Portal",
+    category: "UP Central Portal",
+    description: "Explore UP heritage, Taj Mahal, Varanasi Ghats, Ayodhya Ram Mandir, Awadhi Cuisine, and 10 tourism modules.",
+    url: "frontend/up-dashboard/up-dashboard.html"
   // --- Uttar Pradesh District Explorer ---
   {
     title: "Uttar Pradesh District Explorer",
